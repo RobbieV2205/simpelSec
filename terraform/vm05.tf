@@ -4,6 +4,11 @@ resource "proxmox_vm_qemu" "simpelsec_VM05" {
   vmid        = 113
   target_node = "prox02"
 
+ha {
+    group = "ha-group01"   # Naam van je HA-groep in Proxmox
+    state = "started"      # Andere opties: "stopped", "ignored"
+  }
+
   agent = 1
 
   clone   = "ubuntu-template"
