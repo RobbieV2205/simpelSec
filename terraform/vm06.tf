@@ -1,7 +1,7 @@
 resource "proxmox_vm_qemu" "simpelsec_VM06" {
   name        = "VM06"
   desc        = "VM06 Grafana"
-  vmid        = "114"
+  vmid        = 114
   target_node = "prox02"
 
   agent = 1

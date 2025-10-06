@@ -1,7 +1,7 @@
 resource "proxmox_vm_qemu" "simpelsec_VM05" {
   name        = "VM05"
   desc        = "VM05 Datbase"
-  vmid        = "113"
+  vmid        = 113
   target_node = "prox02"
 
   agent = 1

@@ -1,7 +1,7 @@
 resource "proxmox_vm_qemu" "simpelsec_VM01" {
   name        = "VM01"
   desc        = "VM01 DNS server"
-  vmid        = "110"
+  vmid        = 110
   target_node = "prox02"
 
   agent = 1

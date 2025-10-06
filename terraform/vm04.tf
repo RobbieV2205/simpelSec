@@ -1,7 +1,7 @@
 resource "proxmox_vm_qemu" "simpesec_VM04" {
   name        = "VM04"
   desc        = "VM04 webserver"
-  vmid        = "112"
+  vmid        = 112
   target_node = "prox02"
 
   agent = 1

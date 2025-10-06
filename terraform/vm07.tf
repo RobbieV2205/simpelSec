@@ -1,7 +1,7 @@
 resource "proxmox_vm_qemu" "simpelsec_VM07" {
   name        = "VM07"
   desc        = "VM07 Security sandbox"
-  vmid        = "115"
+  vmid        = 115
   target_node = "prox02"
 
   agent = 1

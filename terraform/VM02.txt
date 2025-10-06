@@ -1,7 +1,7 @@
 resource "proxmox_vm_qemu" "simpelsec_VM02" {
   name        = "VM02"
   desc        = "VM02 Ansible"
-  vmid        = "111"
+  vmid        = 111
   target_node = "prox02"
 
   agent = 1
