@@ -1,11 +1,11 @@
 resource "proxmox_vm_qemu" "simpesec_VM04" {
   name        = "VM04"
   desc        = "VM04 webserver"
-  vmid        = 112
+  vmid        = 113
   target_node = "prox02"
 
 ha {
-    group = "ha-group01"   # Naam van je HA-groep in Proxmox
+    group = "ha-group01"   # CHECK DIT NA IK WEET NIET WAT DE NAAM WAS VAN ONZE CLUSTER
     state = "started"      # Andere opties: "stopped", "ignored"
   }
 

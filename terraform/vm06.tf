@@ -1,11 +1,11 @@
 resource "proxmox_vm_qemu" "simpelsec_VM06" {
   name        = "VM06"
   desc        = "VM06 Grafana"
-  vmid        = 114
+  vmid        = 115
   target_node = "prox02"
 
 ha {
-    group = "ha-group01"   # Naam van je HA-groep in Proxmox
+    group = "ha-group01"   # CHECK DIT NA IK WEET NIET WAT DE NAAM WAS VAN ONZE CLUSTER
     state = "started"      # Andere opties: "stopped", "ignored"
   }
 

@@ -1,0 +1,11 @@
+[simpelsec]
+
+172.10.50.81
+172.10.50.90
+172.10.50.91
+172.10.50.100
+
+[simpelSec:vars]
+
+ansible_user=root
+ansible_password=oversleepnumeric

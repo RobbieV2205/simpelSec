@@ -1,12 +1,12 @@
 resource "proxmox_vm_qemu" "simpelsec_VM07" {
   name        = "VM07"
   desc        = "VM07 Security sandbox"
-  vmid        = 115
+  vmid        = 116
   target_node = "prox02"
 
 ha {
-    group = "ha-group01"   # Naam van je HA-groep in Proxmox
-    state = "started"      # Andere opties: "stopped", "ignored"
+    group = "ha-group01"   # CHECK DIT NA IK WEET NIET WAT DE NAAM WAS VAN ONZE CLUSTER
+    state = "started"      
   }
 
   agent = 1
