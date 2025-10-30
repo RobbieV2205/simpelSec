@@ -1,0 +1,82 @@
+
+- name: Ensure base dependencies are present
+  apt:
+    name:
+      - gnupg
+      - ca-certificates
+      - apt-transport-https
+    state: present
+    update_cache: yes
+
+- name: Add Grafana GPG key
+  apt_key:
+    url: https://apt.grafana.com/gpg.key
+    state: present
+
+- name: Add Grafana APT repository
+  apt_repository:
+    repo: "deb https://apt.grafana.com stable main"
+    state: present
+    filename: grafana
+
+- name: Install Grafana
+  apt:
+    name: grafana
+    state: present
+    update_cache: yes
+
+- name: Ensure provisioning dirs exist
+  file:
+    path: "/etc/grafana/provisioning/datasources"
+    state: directory
+    owner: root
+    group: grafana
+    mode: "0755"
+
+- name: Render grafana.ini (SQLite backend)
+  template:
+    src: grafana.ini.j2
+    dest: /etc/grafana/grafana.ini
+    owner: root
+    group: grafana
+    mode: "0640"
+  notify: Restart Grafana
+
+- name: Provision Prometheus datasource
+  template:
+    src: datasource-prometheus.yaml.j2
+    dest: /etc/grafana/provisioning/datasources/prometheus.yaml
+    owner: root
+    group: grafana
+    mode: "0644"
+  notify: Restart Grafana
+
+- name: Ensure Grafana running
+  service:
+    name: grafana-server
+    state: started
+    enabled: yes
+
+- name: Allow Grafana port (3000/tcp) through UFW
+  ufw:
+    rule: allow
+    port: "3000"
+    proto: tcp
+  ignore_errors: yes
+  tags: firewall
+
+- name: Install node exporter
+  apt:
+    name:
+      - prometheus-node-exporter
+    state: present
+    update_cache: yes
+
+
+- name: Enable and start Node Exporter
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - prometheus-node-exporter

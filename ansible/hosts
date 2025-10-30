@@ -1,0 +1,27 @@
+
+[linux]
+172.10.50.83
+172.10.50.84
+172.10.50.85
+
+[linux:vars]
+ansible_user=root
+ansible_password=oversleepnumeric
+
+[grafana]
+172.10.50.85 ansible_user=root
+[grafana:vars]
+ansible_user=root
+ansible_password=oversleepnumeric
+
+[prometheus]
+172.10.50.84 ansible_user=root
+[prometheus:vars]
+ansible_user=root
+ansible_password=oversleepnumeric
+
+[wordpress]
+172.10.50.83
+[wordpress:vars]
+ansible_user=root
+ansible_password=oversleepnumeric

@@ -1,0 +1,111 @@
+- name: Install MariaDB server
+  apt:
+    name: mariadb-server
+    state: present
+    update_cache: yes
+  tags: database
+
+- name: Install MariaDB client
+  apt:
+    name: mariadb-client
+    state: present
+  tags: database
+
+# Ansible's mysql_* modules need a Python MySQL client on the managed host
+- name: Install Python MySQL driver for Ansible modules
+  apt:
+    name: python3-mysqldb
+    state: present
+  tags: database
+
+- name: Start and enable MariaDB service
+  service:
+    name: mariadb    # on Ubuntu/Debian the service is usually 'mariadb' (not 'mysql' and not 'mariadb-server')
+    state: started
+    enabled: yes
+  tags: database
+
+- name: Pause to let MariaDB initialize
+  pause:
+    seconds: 8
+  ignore_errors: yes
+  tags: database
+
+- name: Check if the root password is already set
+  shell: mysqladmin -u root status
+  changed_when: false
+  failed_when: false
+  register: root_pwd_check
+  tags: database
+
+- debug:
+    var: root_pwd_check
+  tags: database
+
+# NOTE: modern MariaDB on Ubuntu may use unix_socket auth for root.
+# If the following task fails, consider adding login_unix_socket: /var/run/mysqld/mysqld.sock
+- name: Set MariaDB root password (first time)
+  community.mysql.mysql_user:
+    name: root
+    password: "{{ mysql_root_password }}"
+    login_user: root
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    state: present
+  ignore_errors: yes
+  tags: database
+
+- name: Remove anonymous MySQL user
+  community.mysql.mysql_user:
+    name: ''
+    host: localhost
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    state: absent
+  ignore_errors: yes
+  tags: database
+
+- name: Remove test database
+  community.mysql.mysql_db:
+    name: test
+    state: absent
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+  ignore_errors: yes
+  tags: database
+
+# Create ONE shared DB for both apps (as je docent vroeg)
+- name: Create shared database for WordPress & Grafana
+  community.mysql.mysql_db:
+    name: "{{ shared_db | default('shared_db') }}"
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+  tags: database
+
+# Create an application user with rights on that single DB
+- name: Create app user with privileges on shared DB
+  community.mysql.mysql_user:
+    name: "{{ app_db_user | default('appuser') }}"
+    password: "{{ app_db_pass | default('changeme') }}"
+    host: "localhost"
+    priv: "{{ shared_db | default('shared_db') }}.*:ALL"
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+  tags: database
+
+- name: Install node exporter
+  apt:
+    name:
+      - prometheus-node-exporter
+    state: present
+    update_cache: yes
+
+
+- name: Enable and start Node Exporter
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - prometheus-node-exporter

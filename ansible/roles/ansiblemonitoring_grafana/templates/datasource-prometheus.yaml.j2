@@ -1,0 +1,9 @@
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: {{ grafana_prometheus_url | default('http://172.10.50.84:9090') }}
+    isDefault: true
+    editable: false

@@ -1,0 +1,15 @@
+[server]
+http_addr = 0.0.0.0
+http_port = 3000
+
+[database]
+# Gebruik géén MariaDB/MySQL meer
+type = sqlite3
+path = /var/lib/grafana/grafana.db
+
+[security]
+admin_user = admin
+admin_password = admin
+
+[paths]
+provisioning = /etc/grafana/provisioning

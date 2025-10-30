@@ -1,0 +1,10 @@
+# #Password for MariaDB Root user
+mysql_root_password: "Welkom01"
+## WordPress-DatBase Name:
+wordpress_db: "wordpress"
+##Wordpress DataBase UserName:
+wordpress_dbuser: "wordpress"
+## WordPress DataBase Password
+wordpress_dbpass: "Welkom01"
+## WordPress Database localhost hostname
+host: "localhost"

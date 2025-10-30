@@ -1,0 +1,25 @@
+- name: Install Prometheus and node exporter
+  apt:
+    name:
+      - prometheus
+      - prometheus-node-exporter
+    state: present
+    update_cache: yes
+
+- name: Configure Prometheus scrape targets
+  template:
+    src: prometheus.yml.j2
+    dest: /etc/prometheus/prometheus.yml
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart Prometheus
+
+- name: Enable and start Prometheus & Node Exporter
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - prometheus
+    - prometheus-node-exporter

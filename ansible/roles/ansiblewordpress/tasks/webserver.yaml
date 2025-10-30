@@ -1,0 +1,32 @@
+- name: Install Apache HTTP server
+  apt:
+    name: apache2
+    state: present
+  tags: webserver
+
+- name: Enable and start Apache
+  service:
+    name: apache2
+    state: started
+    enabled: yes
+  tags: webserver
+
+- name: Ensure UFW is installed
+  apt:
+    name: ufw
+    state: present
+  tags: webserver
+
+- name: Allow HTTP via UFW
+  become: true
+  ansible.builtin.shell: ufw allow 80/tcp
+
+- name: Allow HTTPS via UFW
+  become: true
+  ansible.builtin.shell: ufw allow 443/tcp
+
+- name: Ensure UFW is enabled
+  ufw:
+    state: enabled
+  ignore_errors: yes
+  tags: webserver

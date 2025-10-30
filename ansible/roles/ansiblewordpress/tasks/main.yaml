@@ -1,0 +1,39 @@
+- name: Update apt cache
+  apt:
+    update_cache: yes
+  tags: always
+
+- name: Install base packages (apt-utils, wget, unzip, software-properties-common)
+  apt:
+    name:
+      - apt-utils
+      - wget
+      - unzip
+      - software-properties-common
+    state: present
+  tags: base
+
+
+- name: Install PHP and common extensions (Ubuntu/Debian default, usually PHP 8.x)
+  apt:
+    name:
+      - php
+      - libapache2-mod-php
+      - php-mysql
+      - php-gd
+      - php-xml
+      - php-mbstring
+    state: present
+  tags: php
+
+- name: Install and configure MariaDB (server, client, users, DB)
+  include_tasks: database.yaml
+  tags: database
+
+- name: Install and configure Apache
+  include_tasks: webserver.yaml
+  tags: webserver
+
+- name: Deploy WordPress
+  include_tasks: wordpress.yaml
+  tags: wordpress

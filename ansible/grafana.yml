@@ -1,0 +1,11 @@
+- hosts: grafana
+  become: yes
+  roles:
+    - role: ansiblemonitoring_grafana
+  vars:
+    grafana_db_host: "172.10.50.83"
+    grafana_db_name: "shared_db"
+    grafana_db_user: "appuser"
+    grafana_db_password: "Welkom01"
+    grafana_table_prefix: "grafana_"
+    grafana_prometheus_url: "http://172.10.50.84:9090"
