@@ -17,7 +17,7 @@ provider "proxmox" {
 
 resource "proxmox_vm_qemu" "tf-vm03" {
   vmid             = 120
-  name             = "tf-vm04"
+  name             = "tf-vm03"
   target_node      = "prox02"
   agent            = 1
   cores            = 4
@@ -32,7 +32,7 @@ resource "proxmox_vm_qemu" "tf-vm03" {
   cicustom   = "vendor=local:snippets/qemu-guest-agent.yml" # /var/lib/vz/snippets/qemu-guest-agent.yml
   ciupgrade  = true
   nameserver = "1.1.1.1 8.8.8.8"
-  ipconfig0  = "ip=172.10.50.43/24,gw=172.10.50.1,ip6=dhcp"
+  ipconfig0  = "ip=172.10.50.83/24,gw=172.10.50.1,ip6=dhcp"
   skip_ipv6  = true
   ciuser     = "root"
   cipassword = "oversleepnumeric"
